@@ -1,34 +1,48 @@
-#!/bin/bash
+#/bin/bash
 
 #just want to get repository from gitosc,then push into github
+#
+#
 
+. cfont.sh
 if [ $# -lt 1 ]
 then
-	echo "usage: osc2hub gitosc-url github-url"
-	echo "You can -h or --help for help detail!"
+	cfont -green "usage: osc2hub gitosc-url github-url"
+	cfont -green "You can -h or --help for help detail!"
 else
 	if [ $1 == "-h" -o $1 == "--help" ]
 	then
-		echo "detail help"
+		cfont -green "detail help"
 	else
-		#$1 is a url repository in web: like gitosc ,github 
-		git clone $1 2>/dev/null
+#$1 is a url repository in web: like gitosc ,github 
+		git clone $1 
 		if [ $? != 0 ]		#repo is not exist
-		then echo "Sorry ,may be you url is not exist or write wrong! Please make sure that you url is right!" 
+		then cfont -red "Sorry ,may be you url is not exist or write wrong! Please make sure that you url is right!" 
 		else				
-			#get the repo'name
+#get the repo'name
 			path=`pwd`
 			reponame=$(echo $1 | awk -F '/' '{print $2}')
 			pureReponame=$(echo $reponame |awk -F '.' '{print $1}')
-			echo "get a new repo:" $pureReponame
+			cfont -green "get a new repo:" $pureReponame
 			abspath="$path/$pureReponame"
-			echo $abspath
+#			cfont -red $abspath
 			cd $abspath
 
-			#chage remote host-url
+#chage remote host-url
+			cfont -blue "Your old Remote Host:"
 			git remote -v
 			git remote set-url origin $2
+			cfont -green "Now ,This is you new Remote Host:"
 			git remote -v
+#get url2' empty repo 
+			git pull origin master
+			git commit -am "The osc2hub is OK\!"
+			git push origin master
+			cfont -red "The osc2hub is OK!"
 		fi
 	fi
 fi
+
+#2015年 11月 05日 星期四 15:54:36 CST 
+#Auther: Skybosi
+#Email : skybosi_fxc@163.com
