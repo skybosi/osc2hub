@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#just want to get repository from gitosc,then push into github
+
+if [ $# -lt 1 ]
+then
+	echo "usage: osc2hub gitosc-url github-url"
+	echo "You can -h or --help for help detail!"
+else
+	if [ $1 == "-h" -o $1 == "--help" ]
+	then
+		echo "detail help"
+	else
+		#$1 is a url repository in web: like gitosc ,github 
+		git clone $1 2>/dev/null
+		if [ $? != 0 ]		#repo is not exist
+		then echo "Sorry ,may be you url is not exist or write wrong! Please make sure that you url is right!" 
+		else				
+			#get the repo'name
+			path=`pwd`
+			reponame=$(echo $1 | awk -F '/' '{print $2}')
+			pureReponame=$(echo $reponame |awk -F '.' '{print $1}')
+			echo "get a new repo:" $pureReponame
+			abspath="$path/$pureReponame"
+			echo $abspath
+			cd $abspath
+
+			#chage remote host-url
+			git remote -v
+			git remote set-url origin $2
+			git remote -v
+		fi
+	fi
+fi
