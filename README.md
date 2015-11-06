@@ -15,4 +15,4 @@ cfont.sh:
 is a simply file that embellish the osc2hub run colorful
 
 ##Contact me
-[skybosi](skybosi_fxc@163.com)
+`skybosi_fxc@163.com`
